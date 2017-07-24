@@ -6,7 +6,7 @@ import ray.eldath.avalon.gc.model.Rule;
 import static ray.eldath.avalon.gc.util.Flag.AT;
 
 public class Core {
-    public static void start(GroupMember member, Rule rule) {
+    public static void handleOnce(GroupMember member, Rule rule) {
         String nextTime = rule.kickNextTime(member);
         String notice = rule.notice(member);
 

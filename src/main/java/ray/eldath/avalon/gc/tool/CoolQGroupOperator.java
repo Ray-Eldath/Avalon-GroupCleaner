@@ -7,6 +7,7 @@ import org.json.JSONTokener;
 import ray.eldath.avalon.gc.model.Group;
 import ray.eldath.avalon.gc.model.GroupMember;
 import ray.eldath.avalon.gc.model.GroupMemberRoleEnum;
+import ray.eldath.avalon.gc.util.Constant;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -21,6 +22,10 @@ public class CoolQGroupOperator {
     }
 
     public static void sendToGroup(long groupUid, String message) {
+        if (Constant._DEBUG()) {
+            System.out.println("To " + groupUid + ": " + message);
+            return;
+        }
         Map<String, Object> object = new HashMap<>();
         object.put("group_id", groupUid);
         object.put("message", message);
@@ -29,6 +34,8 @@ public class CoolQGroupOperator {
     }
 
     public static void groupKick(long groupUid, long userUid) {
+        if (Constant._DEBUG())
+            return;
         Map<String, Object> object = new HashMap<>();
         object.put("group_id", groupUid);
         object.put("user_id", userUid);
@@ -64,7 +71,8 @@ public class CoolQGroupOperator {
         object.put("user_id", userUid);
         object.put("no_cache", false);
 
-        JSONObject response = (JSONObject) new JSONTokener(sendRequest("/get_group_member_info", object)).nextValue();
+        JSONObject response = ((JSONObject) new JSONTokener(
+                sendRequest("/get_group_member_info", object)).nextValue()).getJSONObject("data");
 
         return new GroupMember(
                 getGroup(groupUid),
