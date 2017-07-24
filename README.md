@@ -10,6 +10,6 @@
  - ...
  
 ## 使用方法
- 1. 下载最新RELEASE并解压缩归档文件
+ 1. 下载[最新RELEASE](https://github.com/Ray-Eldath/Avalon-GroupCleaner/releases)并解压缩归档文件
  2. 编辑`./bin/rule/groovy/_rule.groovy`文件自定义规则
  3. 运行`./bin/avalon.group-cleaner`文件

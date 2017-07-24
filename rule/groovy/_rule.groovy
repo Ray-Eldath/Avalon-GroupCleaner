@@ -18,6 +18,6 @@ class _rule implements Rule {
     }
 
     String notice(GroupMember member) {
-        return "提醒一下"
+        return "提醒"
     }
 }
