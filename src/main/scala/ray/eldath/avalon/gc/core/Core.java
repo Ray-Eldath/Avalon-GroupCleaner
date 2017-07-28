@@ -18,21 +18,24 @@ public class Core {
 			member.kick();
 			System.out.println("群员 " + member.getUserUid() + ":" + member.getCard() + " 已被移出。");
 			kickT++;
-		} else {
-			if (!Constant._DEBUG())
-				if (Variable.ENABLE_ANTI_DISPLAY_OVERLOAD())
-					Thread.sleep(2500); // 防刷屏
-			if (nextTime != null && !nextTime.isEmpty()) {
-				KickNextTime.instance().add(member);
-				member.reply(AT(member) + nextTime + "\n若您不做出修正，则您将在下次运行Avalon-GroupCleaner时被移出本群！");
-				System.out.println("群员 " + member.getUserUid() + ":" + member.getCard() + " 将在下次运行时移出。");
-				kickNextTimeT++;
-			} else if (notice != null && !notice.isEmpty()) {
-				member.reply(AT(member) + notice + "\n请您做出修正。");
-				System.out.println("已提醒群员 " + member.getUserUid() + ":" + member.getCard() + " 做出修正。");
-				noticeT++;
-			}
+		} else if (nextTime != null && !nextTime.isEmpty()) {
+			hold();
+			KickNextTime.instance().add(member);
+			member.reply(AT(member) + nextTime + "\n若您不做出修正，则您将在下次运行Avalon-GroupCleaner时被移出本群！");
+			System.out.println("群员 " + member.getUserUid() + ":" + member.getCard() + " 将在下次运行时移出。");
+			kickNextTimeT++;
+		} else if (notice != null && !notice.isEmpty()) {
+			hold();
+			member.reply(AT(member) + notice + "\n请您做出修正。");
+			System.out.println("已提醒群员 " + member.getUserUid() + ":" + member.getCard() + " 做出修正。");
+			noticeT++;
 		}
+	}
+
+	private static void hold() throws InterruptedException {
+		if (!Constant._DEBUG())
+			if (Variable.ENABLE_ANTI_DISPLAY_OVERLOAD())
+				Thread.sleep(2500); // 防刷屏
 	}
 
 	public static int kickT() {
