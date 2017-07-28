@@ -7,6 +7,7 @@ import ray.eldath.avalon.gc.model.GroupMember;
 import ray.eldath.avalon.gc.model.Rule;
 import ray.eldath.avalon.gc.tool.CoolQGroupOperator;
 import ray.eldath.avalon.gc.util.Constant;
+import ray.eldath.avalon.gc.util.Variable;
 
 import java.io.File;
 import java.io.IOException;
@@ -64,9 +65,11 @@ public class MainClass {
 		if (Constant._KICK_NEXT_TIME_LIST().exists())
 			System.out.println("注意：检测到`remove.json`文件存在！请确认您是否有意愿移出上次未整改的群成员，" +
 					"若不是请手动山删除`remove.json`后再次运行本程序！");
-		System.out.println("是否启用 每隔2s发送消息 已防止刷屏？开启可能造成程序运行时间极长 (y/n)：");
+		System.out.println("是否启用 每隔2s发送消息 已防止刷屏？开启可能造成程序运行时间变长 (y/n)：");
 		String chooseString = scanner.next();
 		boolean on = chooseString.equals("y");
+		Variable.ENABLE_ANTI_DISPLAY_OVERLOAD_$eq(on);
+		System.out.println("防刷屏机制已" + (on ? "启用" : "关闭"));
 		System.out.println("即将开始清理！请确认已打开酷Q并已成功装载CoolQ HTTP API。键入`confirm`以开始清理进程：");
 		String confirm = scanner.next();
 
@@ -80,9 +83,6 @@ public class MainClass {
 		for (GroupMember thisMember : groupMembers) {
 			Core.handleOnce(thisMember, rule);
 			System.out.println("已处理群成员：" + processed++);
-			if (!Constant._DEBUG())
-				if (on)
-					Thread.sleep(2500); // 防止刷屏
 		}
 		KickNextTime.instance().close();
 		System.out.println("群成员清理已完成。");
